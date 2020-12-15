@@ -69,7 +69,7 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                     p("Every Canadian province is now benefiting from clean wind energy.")
                     ),
                  fluidRow(
-                   tags$img(id = "myImage", src = "image1.jpg"),
+                   tags$img(id = "myImage", src = "image1.jpg", alt = "Image Source: NAwindpower.com"),
                    hr()
                    )
                  )
@@ -103,8 +103,6 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                sidebarPanel(radioButtons("selectPlot", h4("Select a plot type"),
                             choices = c("By Projects" = "projects", "By Province"="province")),
                             hr(),
-               sliderInput(inputId = "count", label = "Adjust to see turbine count by location",
-                           min = 0, max = 350, step=5, value = 350, animate=TRUE)
                ),
                mainPanel(h4(br(),"Number of Turbines"), plotOutput("countPlots"))
              )
@@ -147,32 +145,32 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                fluidRow(
                  hr(), hr(),
                  h6("Slide 1"),
-                 tags$img(id = "1", src = "slide1cover.png", alt = "Slide 1")
+                 tags$img(id = "1", src = "slide1cover.png", alt = "Cover Page")
                ),
                fluidRow(
                  hr(), hr(),
                  h6("Slide 2"),
-                 tags$img(id = "2", src = "slide2agenda.png")
+                 tags$img(id = "2", src = "slide2agenda.png", alt = "Agenda")
                ),
                fluidRow(
                  hr(), hr(),
                  h6("Slide 3"),
-                 tags$img(id = "3", src = "slide3data.png")
+                 tags$img(id = "3", src = "slide3data.png", alt = "Data")
                ),
                fluidRow(
                  hr(), hr(),
                  h6("Slide 4"),
-                 tags$img(id = "4", src = "slide4task.png")
+                 tags$img(id = "4", src = "slide4task.png", alt = "Design")
                ),
                fluidRow(
                  hr(), hr(),
                  h6("Slide 5"),
-                 tags$img(id = "5", src = "slide5demo.png")
+                 tags$img(id = "5", src = "slide5demo.png", alt = "Demo Slide")
                ),
                fluidRow(
                  hr(), hr(),
                  h6("Slide6"),
-                 tags$img(id = "6", src = "slide6final.png")
+                 tags$img(id = "6", src = "slide6final.png", alt = "UNCC - School of Data Science")
                ),
                fluidRow(
                  hr(), hr(),
