@@ -11,7 +11,11 @@ library(tippy)
 library(jpeg)
 library(rsconnect)
 
+## This is a group project for Visual Analytics with Professor Jinwen Qui
+## School of Data Science, University of North Carolina - Charlotte
+## Code developed outside of the group project will be cited in comments
 
+## Following code is by HunterKempf, https://github.com/thedataviz/Tidy-Tuesday/tree/master/10-27-2020
 first_date <- function(date_string){
   split = str_split(date_string,"/")
   ints = sapply(split,as.integer)
@@ -37,6 +41,7 @@ cumulative_MW_added <- projects %>% group_by(year,province_territory) %>%
   mutate(cumulative_MW = cumsum(total_MW_added), households_covered = MWh_in_year*cumulative_MW/(avg_consumption))
 
 cumulative_MW_added
+## ------------ End of code by HunterKempf
 
 province <- st_read("./data/province/province.shp")
 m= list(  "Alberta"= "Alberta","British Columbia"= "British Columbia","Manitoba"= "Manitoba",                 
@@ -45,7 +50,6 @@ m= list(  "Alberta"= "Alberta","British Columbia"= "British Columbia","Manitoba"
           "Nova Scotia"="Nova Scotia", "Ontario"= "Ontario",
           "Prince Edward Island"= "Prince Edward Island",    
           "Quebec"="Quebec")
-
 
 ui <- fluidPage(theme = shinytheme("flatly"),
 tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font to steelblue
@@ -184,11 +188,10 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
   ) #close navbar
 ) #end ui
 
-server <- function(input, output, session) {
- 
+server <- function(input, output, session) { 
 
   ## data table output 
-  wind_turbine2 = wind_turbine[sample(nrow(wind_turbine), 50), ] 
+  wind_turbine2data table output  = wind_turbine[sample(nrow(wind_turbine), 50), ] 
   
   output$table <- DT::renderDataTable({
     DT::datatable(wind_turbine2[, input$show_vars, drop = FALSE])
@@ -203,7 +206,7 @@ server <- function(input, output, session) {
       write.csv(datasetInput(input$dataset), file, row.names = FALSE)
     }
   )
-  ##-------------------
+  ##------------------- 
  
   ## summary table output 
   output$summary <- renderTable({
@@ -212,6 +215,8 @@ server <- function(input, output, session) {
   ## -------------------
  
   ## Bar Graphs output
+  ## Bar graph code for summaries and counts by Cédric Scherer, https://tidytuesday.correlaid.org/2020-10-27/
+  ## Adapted with ggplot, reactivity and if-else by publisher for this group project
    countPlots <- reactive({  
       projCount %>% 
         filter(projCount %in% 100:input$count)
@@ -276,6 +281,8 @@ server <- function(input, output, session) {
   ## ----------------------
   
   ## zoom map output
+  ## choropleth map code by HunterKempf
+  ## Adapted with reactivity by publisher for this group project
   ranges <- reactiveValues(x = NULL, y = NULL)
   
   output$zoomMap <- renderPlot({
