@@ -190,7 +190,7 @@ server <- function(input, output, session) {
  
   ## image for landing page 
   output$myImage<-renderText({
-    c('<img src="',"https://nawindpower.com/wp-content/uploads/2017/01/iStock-174169563-1.jpg",'">'
+    tags$img(id = "myImage", src = "image1.jpg")
     )
   })
   ##--------------------
