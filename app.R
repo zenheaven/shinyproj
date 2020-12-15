@@ -216,8 +216,8 @@ server <- function(input, output, session) {
   ## -------------------
  
   ## Bar Graphs output
-  ## Bar graph code for summaries and counts by Cédric Scherer, https://tidytuesday.correlaid.org/2020-10-27/
-  ## Adapted with ggplot, reactivity and if-else by publisher for this group project
+  ## Bar graph code for summaries, counts, and plot by Cédric Scherer, https://tidytuesday.correlaid.org/2020-10-27/
+  ## Adapted with additional ggplot elements, reactivity and if-else by this github member for group project
    countPlots <- reactive({  
       projCount %>% 
         filter(projCount %in% 100:input$count)
