@@ -9,7 +9,7 @@ library(tidytext)
 library(shinythemes)
 library(tippy)
 library(jpeg)
-library(shinyjs)
+library(rsconnect)
 
 
 first_date <- function(date_string){
@@ -69,7 +69,7 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                     p("Every Canadian province is now benefiting from clean wind energy.")
                     ),
                  fluidRow(
-                   htmlOutput("myImage"),
+                   tags$img(id = "myImage", src = "image1.jpg"),
                    hr()
                    )
                  )
@@ -188,13 +188,7 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
 
 server <- function(input, output, session) {
  
-  ## image for landing page 
-  output$myImage<-renderText({
-    tags$img(id = "myImage", src = "image1.jpg")
-    )
-  })
-  ##--------------------
- 
+
   ## data table output 
   wind_turbine2 = wind_turbine[sample(nrow(wind_turbine), 50), ] 
   
