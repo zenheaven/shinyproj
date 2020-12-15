@@ -244,7 +244,6 @@ server <- function(input, output, session) {
   },height=800)
   ##------------------------
   
-  
   ## facted graphs output
   yearData <- reactive({  
     m <- select(wind_turbine,year,hub_height_m,turbine_rated_capacity_k_w,province_territory) %>% 
@@ -275,7 +274,6 @@ server <- function(input, output, session) {
       theme_minimal()
   }, height = 800)
   ## ----------------------
-
   
   ## zoom map output
   ranges <- reactiveValues(x = NULL, y = NULL)
