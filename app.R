@@ -14,6 +14,7 @@ library(rsconnect)
 ## This is a group project for Visual Analytics with Professor Jinwen Qui
 ## School of Data Science, University of North Carolina - Charlotte
 ## Code developed outside of the group project will be cited in comments
+## Additional sources: Shiny User Galler, https://shiny.rstudio.com/gallery/
 
 ## Following code is by HunterKempf, https://github.com/thedataviz/Tidy-Tuesday/tree/master/10-27-2020
 first_date <- function(date_string){
