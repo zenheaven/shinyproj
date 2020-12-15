@@ -50,25 +50,30 @@ m= list(  "Alberta"= "Alberta","British Columbia"= "British Columbia","Manitoba"
 ui <- fluidPage(theme = shinytheme("flatly"),
 tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font to steelblue
 
-  navbarPage(title = "",
+  navbarPage(title = "Welcome!",
 
       tabPanel("Home",
              sidebarLayout(   
                sidebarPanel(
                  br(),
                  h3("Use the tabs to explore Canada's wind turbine locations, production, and growth through the years."),
-                 br(),br()),
-               mainPanel(h1(tippy("Wind Energy in Canada", tooltip = "Welcome to our Shiny App: Wind Energy in Canada.")
-                            ), 
-                         h4("More wind energy has been built in Canada between 2009 and 2020 than any other form of electricity."),
-                         p("Wind energy is generating enough power to meet the needs of over three million Canadian homes."),
-                         p("There are 301 wind farms operating from coast to coast, with projects in two northern territories."),
-                         p("In 2019, Canada’s wind generation grew by 597 megawatts (MW) from five new wind energy projects, representing an investment of over $1 billion."),
-                         p("Every Canadian province is now benefiting from clean wind energy."),
-                         
-               htmlOutput("myImage")
-               )
-            )
+                 br(),br()
+                 ),
+               mainPanel(
+                 fluidRow(
+                    h1(tippy("Wind Energy in Canada", tooltip = "Welcome to our Shiny App: Wind Energy in Canada.")),
+                    h4("More wind energy has been built in Canada between 2009 and 2020 than any other form of electricity."),
+                    p("Wind energy is generating enough power to meet the needs of over three million Canadian homes."),
+                    p("There are 301 wind farms operating from coast to coast, with projects in two northern territories."),
+                    p("In 2019, Canada’s wind generation grew by 597 megawatts (MW) from five new wind energy projects, representing an investment of over $1 billion."),
+                    p("Every Canadian province is now benefiting from clean wind energy.")
+                    ),
+                 fluidRow(
+                   htmlOutput("myImage"),
+                   hr()
+                   )
+                 )
+             )
       ),
       navbarMenu("Tables",
         tabPanel("Data Table",  
@@ -81,7 +86,9 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                            names(wind_turbine), selected = names(wind_turbine)), width = 3,
          hr(),
          downloadButton("download", "Download")),
-       mainPanel(h4("Wind Turbine Dataset (view of first 50 rows)"), br(),DT::dataTableOutput("table"))
+       mainPanel(
+         h4("Wind Turbine Dataset (view of first 50 rows)"), br(),
+         DT::dataTableOutput("table"))
        )
       ),
     tabPanel("Projects Summary",
@@ -93,9 +100,12 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
     ),
     tabPanel("Graphs",
              sidebarLayout(
-               sidebarPanel(radioButtons("selectPlot", h4("Select a Plot type"),
-                              choices = c("By Projects" = "projects", "By Province"="province"))
-                            ),
+               sidebarPanel(radioButtons("selectPlot", h4("Select a plot type"),
+                            choices = c("By Projects" = "projects", "By Province"="province")),
+                            hr(),
+               sliderInput(inputId = "count", label = "Adjust to see turbine count by location",
+                           min = 0, max = 350, step=5, value = 350, animate=TRUE)
+               ),
                mainPanel(h4(br(),"Number of Turbines"), plotOutput("countPlots"))
              )
                
@@ -104,7 +114,7 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
              sidebarLayout(
                sidebarPanel(
                  h4("Turbine construction by province and year"),
-                 sliderInput(inputId = "max", label = "Adjust years to see changes by Province over time", 
+                 sliderInput(inputId = "max", label = "Adjust years to see changes by province over time", 
                              min = 1993, max = 2019,step=1, value = 2019, animate=TRUE)
                             ),
                mainPanel(plotOutput("facetGraph"))
@@ -118,7 +128,7 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                             sliderInput(inputId = "map", label = "Adjust to see turbine capacity by location",
                                         min = 0, max = 350, step=1, value = 350, animate=TRUE)
                             ),
-               mainPanel(plotOutput("graph1"))
+               mainPanel(plotOutput("animatedMap"))
                )
              ),
              tabPanel("Zoom Map",
@@ -134,35 +144,47 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
              ),
     tabPanel("Presentation",
              mainPanel(
-               
-               hr(), hr(), br(), br(),
-               h6("Slide 1"),
-               tags$img(id = "1", src = "slide1cover.png"),
-               br(), br(), hr(), hr(), br(), br(),
-               h6("Slide 2"),
-               tags$img(id = "2", src = "slide2agenda.png"),
-               br(), br(), hr(), hr(), br(), br(),
-               h6("Slide 3"),
-               tags$img(id = "3", src = "slide3data.png"),
-               br(), br(), hr(), hr(), br(), br(),
-               h6("Slide 4"),
-               tags$img(id = "4", src = "slide4task.png"),
-               br(), br(), hr(), hr(), br(), br(),
-               h6("Slide 5"),
-               tags$img(id = "5", src = "slide5demo.png"),
-               br(), br(), hr(), hr(), br(), br(),
-               tags$img(id = "6", src = "slide6final.png"),
-               hr(), hr(),
-               h4("Visual Analytics with Professor Jinwen Qiu"),
-               h4("School of Data Science, University of North Carolina - Charlotte"),
-               hr(), hr(),
-               
+               fluidRow(
+                 hr(), hr(),
+                 h6("Slide 1"),
+                 tags$img(id = "1", src = "slide1cover.png", alt = "Slide 1")
+               ),
+               fluidRow(
+                 hr(), hr(),
+                 h6("Slide 2"),
+                 tags$img(id = "2", src = "slide2agenda.png")
+               ),
+               fluidRow(
+                 hr(), hr(),
+                 h6("Slide 3"),
+                 tags$img(id = "3", src = "slide3data.png")
+               ),
+               fluidRow(
+                 hr(), hr(),
+                 h6("Slide 4"),
+                 tags$img(id = "4", src = "slide4task.png")
+               ),
+               fluidRow(
+                 hr(), hr(),
+                 h6("Slide 5"),
+                 tags$img(id = "5", src = "slide5demo.png")
+               ),
+               fluidRow(
+                 hr(), hr(),
+                 h6("Slide6"),
+                 tags$img(id = "6", src = "slide6final.png")
+               ),
+               fluidRow(
+                 hr(), hr(),
+                 h4("Visual Analytics with Professor Jinwen Qiu"),
+                 h4("School of Data Science, University of North Carolina - Charlotte"),
+                 hr(), hr()
                )
+              )
              )
-    
-  #close navbar
-)
-)#end ui
+      
+  ) #close navbar
+) #end ui
 
 server <- function(input, output, session) {
  
@@ -172,8 +194,7 @@ server <- function(input, output, session) {
     )
   })
   ##--------------------
-  
-  
+ 
   ## data table output 
   wind_turbine2 = wind_turbine[sample(nrow(wind_turbine), 50), ] 
   
@@ -187,25 +208,29 @@ server <- function(input, output, session) {
       paste(input$dataset, ".csv", sep = "")
     },
     content = function(file) {
-      write.csv(datasetInput(), file, row.names = FALSE)
+      write.csv(datasetInput(input$dataset), file, row.names = FALSE)
     }
   )
   ##-------------------
-  
-  
+ 
   ## summary table output 
   output$summary <- renderTable({
     subset(projects,province_territory == input$selection)
   })
   ## -------------------
+ 
+  ## Bar Graphs output
+   countPlots <- reactive({  
+      projCount %>% 
+        filter(projCount %in% 100:input$count)
+    })
   
-  
-  ## Bar Graphs output 
   output$countPlots <- renderPlot({
     if (input$selectPlot == "projects") {
-      wind_turbine %>% 
+      projCount <- wind_turbine %>% 
         count(project_name) %>% 
-        filter(n > 50) %>% 
+        filter(n > 50)
+      projCount %>%
         ggplot(aes(forcats::fct_reorder(project_name, n), n)) +
         geom_bar(stat="identity", fill="steelblue") +
         ggtitle("Number of Turbines by Project") +
@@ -228,10 +253,28 @@ server <- function(input, output, session) {
   ##------------------------
   
   
+  ## facted graphs output
+  yearData <- reactive({  
+    m <- select(wind_turbine,year,hub_height_m,turbine_rated_capacity_k_w,province_territory) %>% 
+      filter(year %in% 1993:input$max)
+  })
+  
+  output$facetGraph <- renderPlot({
+    
+    ggplot(yearData(),aes(year,hub_height_m)) + 
+      geom_point(aes(size=turbine_rated_capacity_k_w,color=turbine_rated_capacity_k_w)) +
+      theme_bw() +
+      #theme_linedraw() +
+      facet_wrap(~province_territory) +
+      ylab('Turbine Height') +
+      xlab('Year')
+  })
+  ## ---------------------
+ 
   ## animated map output 
   data1 <- reactive({select(projects,longitude,latitude,capacity) %>% filter (capacity %in% 0:input$map ) })
   
-  output$graph1 <- renderPlot({
+  output$animatedMap <- renderPlot({
     province %>% 
       ggplot() +
       geom_sf(aes(fill = NAME)) + 
@@ -239,12 +282,6 @@ server <- function(input, output, session) {
       geom_point(data = data1(), aes(x = longitude, y = latitude, size = capacity))+
       theme_minimal()
   }, height = 800)
-  
-  
-  data1 <-reactive({
-    select(projects,longitude,latitude,capacity) %>% 
-      filter (capacity %in% 0:input$map ) 
-    })
   ## ----------------------
 
   
@@ -282,26 +319,6 @@ server <- function(input, output, session) {
     
   })
   ## ---------------------
-  
-  ## facted graphs output
-  yearData <- reactive({
-    m <-select(wind_turbine,year,hub_height_m,turbine_rated_capacity_k_w,province_territory) %>% 
-      filter(year %in% 1993:input$max)
-  })
-  
-  output$facetGraph <- renderPlot({
-    
-    ggplot(yearData(),aes(year,hub_height_m)) + 
-      geom_point(aes(size=turbine_rated_capacity_k_w,color=turbine_rated_capacity_k_w)) +
-      theme_bw() +
-      #theme_linedraw() +
-      facet_wrap(~province_territory) +
-      ylab('Turbine Height') +
-      xlab('Year')
-  })
-  ## ---------------------
-  
- 
 }
 
 shinyApp(ui, server)
