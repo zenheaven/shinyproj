@@ -137,21 +137,23 @@ The various ways in which the data is analyzed and explored may largely depend o
 Furthermore, as future design improvements are integrated into the app, the performance, speed, and functionality will need to remain intact as well. Rendering maps is one area that can be improved, and as the analysis grows in complexity and more dynamic features are included, it becomes more important to approach the design decisions from a holistic perspective. Correct functionality, optimized performance, and efficient code will be aspects of the design to keep in high regard to make the user experience as positive as possible.
 
 # Appendix
-## List of Links
+### List of Links
 
 The deployed app, report, and full package can be found at the following links:
 
 - Shiny App: https://jwolf15.shinyapps.io/final_project/
+- Shiny App Backup: https://learningai.shinyapps.io/final_project/
 - Report on bookdown: https://bookdown.org/jenniwolf/barthe-deo-richard-wolf_finalreport/
 - Project files on GitHub: https://github.com/zenheaven/shinyproj
 - Original TidyTuesday by Hunter Kempf on GitHub: https://github.com/thedataviz/Tidy-Tuesday/tree/master/10-27-2020
 
-## About the Author
-Jennifer Wolf is the team lead and lead developer for the Shiny App group project.
+### About the Author
+Jennifer Wolf acted as the team lead and lead developer for the Shiny App group project.
 She authored the full report and the project presentations, which can be found in the Shiny App.
-Project group members are Halima Barthe, Tristan Richard, Ashokanand Deo. Special thank you to Halima and Tristan for your contributions to the Shiny App development.
+Group members are Halima Barthe, Tristan Richard, Ashokanand Deo. Special thank you to Halima and Tristan for your valuable contributions to the app.
 
-Jennifer is with the graduating Class of 2020, School of Data Science, University of North Carolina - Charlotte, Graduate Certificate program.
+The group is with the School of Data Science, University of North Carolina - Charlotte, graduate program.
 
-This is the author's first Shiny App, bookdown report, and GitHub repository.
+Jennifer is with the graduating Class of 2020. This is the author's first Shiny App, bookdown report, and GitHub repository.
+
 
