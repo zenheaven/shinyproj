@@ -15,7 +15,7 @@ https://jwolf15.shinyapps.io/final_project/
 https://learningai.shinyapps.io/final_project/
 
 - bookdown link to final report:
-https://bookdown.org/jenniwolf/barthe-deo-richard-wolf_finalreport2/
+https://bookdown.org/jenniwolf/barthe-deo-richard-wolf_finalreport/
 
 - GitHub link to project files:
 https://github.com/zenheaven/shinyproj
