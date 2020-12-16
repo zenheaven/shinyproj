@@ -57,6 +57,8 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
 
   navbarPage(title = "Welcome!",
 
+## --------------------- start tabs
+             
       tabPanel("Home",
              sidebarLayout(   
                sidebarPanel(
@@ -80,6 +82,8 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                  )
              )
       ),
+## ----------------------------End home tab
+             
       navbarMenu("Tables",
         tabPanel("Data Table",  
                  sidebarLayout(
@@ -96,6 +100,7 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
          DT::dataTableOutput("table"))
        )
       ),
+
     tabPanel("Projects Summary",
              sidebarLayout(
                sidebarPanel(selectInput("selection", "Summary Tab Settings: Select a province to filter summary list", choices = m,selected='Alberta')),
@@ -103,6 +108,8 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                )
              )
     ),
+## ------------------------------ End tables tab
+             
     tabPanel("Graphs",
              sidebarLayout(
                sidebarPanel(radioButtons("selectPlot", h4("Select a plot type"),
@@ -113,6 +120,8 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
              )
                
             ),
+ ## ------------------------------ End graphs tab
+             
     tabPanel("Evolution of Turbines", 
              sidebarLayout(
                sidebarPanel(
@@ -123,6 +132,8 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                mainPanel(plotOutput("facetGraph"))
                )
              ),
+## ------------------------------ End Evolution of turbines tab
+             
     navbarMenu("Maps",
                tabPanel("Animated Map", 
                         sidebarLayout(
@@ -133,7 +144,7 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                             ),
                mainPanel(plotOutput("animatedMap"))
                )
-             ),
+             ),               
              tabPanel("Zoom Map",
                       fluidRow(
                         column(4,
@@ -145,7 +156,9 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                         )
                       )
              ),
-    tabPanel("Presentation",
+## ----------------------------- end maps tab
+             
+tabPanel("Presentation",
              mainPanel(
                fluidRow(
                  hr(), hr(),
@@ -184,21 +197,32 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                  hr(), hr()
                )
               )
-             )
-      
+             ),
+## ----------------------------- end presentation tab
+
+tabPanel("Final Report",
+         mainPanel(
+           fluidRow(
+             includeMarkdown("report.md")
+           )
+         )
+)
+## ------------------------------ End report tab
+
   ) #close navbar
 ) #end ui
 
-server <- function(input, output, session) { 
+server <- function(input, output, session) {
+ 
 
-  ## data table output 
-  wind_turbine2data table output  = wind_turbine[sample(nrow(wind_turbine), 50), ] 
+  ## table output 
+  wind_turbine2 = wind_turbine[sample(nrow(wind_turbine), 50), ] 
   
   output$table <- DT::renderDataTable({
     DT::datatable(wind_turbine2[, input$show_vars, drop = FALSE])
   })
   
-  # Idea is a downloadable csv of selected dataset--- not functioning as intended 
+  # Idea is a downloadable csv of selected dataset--- marked for future improvement
   output$downloadData <- downloadHandler(
     filename = function() {
       paste(input$dataset, ".csv", sep = "")
@@ -207,17 +231,15 @@ server <- function(input, output, session) {
       write.csv(datasetInput(input$dataset), file, row.names = FALSE)
     }
   )
-  ##------------------- 
+  ## End table-------------------
  
-  ## summary table output 
+  ## summary output 
   output$summary <- renderTable({
     subset(projects,province_territory == input$selection)
   })
-  ## -------------------
+  ## End summary-------------------
  
-  ## Bar Graphs output
-  ## Bar graph code for summaries, counts, and plot by Cédric Scherer, https://tidytuesday.correlaid.org/2020-10-27/
-  ## Adapted with additional ggplot elements, reactivity and if-else by this github member for group project
+  ## countPlots output
    countPlots <- reactive({  
       projCount %>% 
         filter(projCount %in% 100:input$count)
@@ -248,9 +270,9 @@ server <- function(input, output, session) {
         ylab('Number of Turbines') +
         xlab('Province')}
   },height=800)
-  ##------------------------
+  ## End countPlots------------------------
   
-  ## facted graphs output
+  ## facetGraph output
   yearData <- reactive({  
     m <- select(wind_turbine,year,hub_height_m,turbine_rated_capacity_k_w,province_territory) %>% 
       filter(year %in% 1993:input$max)
@@ -261,14 +283,13 @@ server <- function(input, output, session) {
     ggplot(yearData(),aes(year,hub_height_m)) + 
       geom_point(aes(size=turbine_rated_capacity_k_w,color=turbine_rated_capacity_k_w)) +
       theme_bw() +
-      #theme_linedraw() +
       facet_wrap(~province_territory) +
       ylab('Turbine Height') +
       xlab('Year')
   })
-  ## ---------------------
+  ## End facetGraph---------------------
  
-  ## animated map output 
+  ## animatedMap output 
   data1 <- reactive({select(projects,longitude,latitude,capacity) %>% filter (capacity %in% 0:input$map ) })
   
   output$animatedMap <- renderPlot({
@@ -279,11 +300,10 @@ server <- function(input, output, session) {
       geom_point(data = data1(), aes(x = longitude, y = latitude, size = capacity))+
       theme_minimal()
   }, height = 800)
-  ## ----------------------
+  ## End animatedMap----------------------
+
   
-  ## zoom map output
-  ## choropleth map code by HunterKempf
-  ## Adapted with reactivity by publisher for this group project
+  ## zoomMap output
   ranges <- reactiveValues(x = NULL, y = NULL)
   
   output$zoomMap <- renderPlot({
@@ -313,10 +333,9 @@ server <- function(input, output, session) {
     } else {
       ranges$x <- NULL
       ranges$y <- NULL
-    }
-    
+    }    
   })
-  ## ---------------------
+  ## End zoomMap---------------------
+  
 }
-
 shinyApp(ui, server)
