@@ -8,8 +8,11 @@ Group: Ashok Deo, Halima Barthe, Tristan Richard, Jennifer Wolf
 Data: Canadian Wind Turbines
 
 
-- Shiny.io Link to deployed app:
-https://jwolf15.shinyapps.io/final_project/
+- Shiny.io Links to deployed app:
+https://jwolf15.shinyapps.io/final_project/ (
+
+- Also deployed by Halima Barthe to:
+https://learningai.shinyapps.io/final_project/
 
 - bookdown link to final report:
 https://bookdown.org/jenniwolf/barthe-deo-richard-wolf_finalreport/
