@@ -8,15 +8,11 @@ library(tidyverse)
 library(tidytext)
 library(shinythemes)
 library(tippy)
-library(jpeg)
+library(knitr)
 library(rsconnect)
 
-## This is a group project for Visual Analytics with Professor Jinwen Qui
-## School of Data Science, University of North Carolina - Charlotte
-## Code developed outside of the group project will be cited in comments
-## Additional sources: Shiny User Galler, https://shiny.rstudio.com/gallery/
 
-## Following code is by HunterKempf, https://github.com/thedataviz/Tidy-Tuesday/tree/master/10-27-2020
+
 first_date <- function(date_string){
   split = str_split(date_string,"/")
   ints = sapply(split,as.integer)
@@ -42,7 +38,6 @@ cumulative_MW_added <- projects %>% group_by(year,province_territory) %>%
   mutate(cumulative_MW = cumsum(total_MW_added), households_covered = MWh_in_year*cumulative_MW/(avg_consumption))
 
 cumulative_MW_added
-## ------------ End of code by HunterKempf
 
 province <- st_read("./data/province/province.shp")
 m= list(  "Alberta"= "Alberta","British Columbia"= "British Columbia","Manitoba"= "Manitoba",                 
@@ -52,13 +47,12 @@ m= list(  "Alberta"= "Alberta","British Columbia"= "British Columbia","Manitoba"
           "Prince Edward Island"= "Prince Edward Island",    
           "Quebec"="Quebec")
 
+
 ui <- fluidPage(theme = shinytheme("flatly"),
 tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font to steelblue
 
   navbarPage(title = "Welcome!",
-
 ## --------------------- start tabs
-             
       tabPanel("Home",
              sidebarLayout(   
                sidebarPanel(
@@ -72,7 +66,7 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                     h4("More wind energy has been built in Canada between 2009 and 2020 than any other form of electricity."),
                     p("Wind energy is generating enough power to meet the needs of over three million Canadian homes."),
                     p("There are 301 wind farms operating from coast to coast, with projects in two northern territories."),
-                    p("In 2019, Canada’s wind generation grew by 597 megawatts (MW) from five new wind energy projects, representing an investment of over $1 billion."),
+                    p("In 2019, Canada's wind generation grew by 597 megawatts (MW) from five new wind energy projects, representing an investment of over $1 billion."),
                     p("Every Canadian province is now benefiting from clean wind energy.")
                     ),
                  fluidRow(
@@ -83,13 +77,12 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
              )
       ),
 ## ----------------------------End home tab
-             
       navbarMenu("Tables",
         tabPanel("Data Table",  
                  sidebarLayout(
                      sidebarPanel(
                        h3("Table Settings"),
-                       p("The dataset is visualized for you in the table to the right."),
+                       p("The dataset is visualized for you in the table.."),
                        p("Select the columns you want to display."),
                        checkboxGroupInput("show_vars", "Columns in projects to show:",
                            names(wind_turbine), selected = names(wind_turbine)), width = 3,
@@ -100,7 +93,7 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
          DT::dataTableOutput("table"))
        )
       ),
-
+## ------------------------------ End tables tab 
     tabPanel("Projects Summary",
              sidebarLayout(
                sidebarPanel(selectInput("selection", "Summary Tab Settings: Select a province to filter summary list", choices = m,selected='Alberta')),
@@ -108,8 +101,7 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                )
              )
     ),
-## ------------------------------ End tables tab
-             
+## ----------------------------- End summary tab
     tabPanel("Graphs",
              sidebarLayout(
                sidebarPanel(radioButtons("selectPlot", h4("Select a plot type"),
@@ -120,8 +112,7 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
              )
                
             ),
- ## ------------------------------ End graphs tab
-             
+## ------------------------------ End Evolution of turbines tab
     tabPanel("Evolution of Turbines", 
              sidebarLayout(
                sidebarPanel(
@@ -132,8 +123,6 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                mainPanel(plotOutput("facetGraph"))
                )
              ),
-## ------------------------------ End Evolution of turbines tab
-             
     navbarMenu("Maps",
                tabPanel("Animated Map", 
                         sidebarLayout(
@@ -144,7 +133,7 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                             ),
                mainPanel(plotOutput("animatedMap"))
                )
-             ),               
+             ),
              tabPanel("Zoom Map",
                       fluidRow(
                         column(4,
@@ -156,9 +145,9 @@ tags$head(tags$style('h4 {color:steelblue;}')), #change the color of all h4 font
                         )
                       )
              ),
-## ----------------------------- end maps tab
-             
-tabPanel("Presentation",
+ ## ------------------------------ End map tab
+
+    tabPanel("Presentations",
              mainPanel(
                fluidRow(
                  hr(), hr(),
@@ -215,14 +204,14 @@ tabPanel("Final Report",
 server <- function(input, output, session) {
  
 
-  ## table output 
+  ## data table output 
   wind_turbine2 = wind_turbine[sample(nrow(wind_turbine), 50), ] 
   
   output$table <- DT::renderDataTable({
     DT::datatable(wind_turbine2[, input$show_vars, drop = FALSE])
   })
   
-  # Idea is a downloadable csv of selected dataset--- marked for future improvement
+  # Idea is a downloadable csv of selected dataset--- not functioning as intended 
   output$downloadData <- downloadHandler(
     filename = function() {
       paste(input$dataset, ".csv", sep = "")
@@ -231,15 +220,15 @@ server <- function(input, output, session) {
       write.csv(datasetInput(input$dataset), file, row.names = FALSE)
     }
   )
-  ## End table-------------------
+  ## End Table -------------------
  
-  ## summary output 
+  ## summary table output 
   output$summary <- renderTable({
     subset(projects,province_territory == input$selection)
   })
-  ## End summary-------------------
+  ## End Summary-------------------
  
-  ## countPlots output
+  ## Bar Graphs output
    countPlots <- reactive({  
       projCount %>% 
         filter(projCount %in% 100:input$count)
@@ -270,9 +259,9 @@ server <- function(input, output, session) {
         ylab('Number of Turbines') +
         xlab('Province')}
   },height=800)
-  ## End countPlots------------------------
+  ## End Graphs------------------------
   
-  ## facetGraph output
+  ## facted graphs output
   yearData <- reactive({  
     m <- select(wind_turbine,year,hub_height_m,turbine_rated_capacity_k_w,province_territory) %>% 
       filter(year %in% 1993:input$max)
@@ -287,9 +276,9 @@ server <- function(input, output, session) {
       ylab('Turbine Height') +
       xlab('Year')
   })
-  ## End facetGraph---------------------
+  ## End Evol---------------------
  
-  ## animatedMap output 
+  ## animated map output 
   data1 <- reactive({select(projects,longitude,latitude,capacity) %>% filter (capacity %in% 0:input$map ) })
   
   output$animatedMap <- renderPlot({
@@ -300,10 +289,10 @@ server <- function(input, output, session) {
       geom_point(data = data1(), aes(x = longitude, y = latitude, size = capacity))+
       theme_minimal()
   }, height = 800)
-  ## End animatedMap----------------------
+  ## End AniMap----------------------
 
   
-  ## zoomMap output
+  ## zoom map output
   ranges <- reactiveValues(x = NULL, y = NULL)
   
   output$zoomMap <- renderPlot({
@@ -333,9 +322,11 @@ server <- function(input, output, session) {
     } else {
       ranges$x <- NULL
       ranges$y <- NULL
-    }    
+    }
+    
   })
-  ## End zoomMap---------------------
-  
+  ## End ZoomMap---------------------
+
 }
+
 shinyApp(ui, server)
