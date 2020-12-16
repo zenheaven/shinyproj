@@ -28,9 +28,6 @@ As a result, the task was to provide a useful experience by implementing a **Shi
 
 In this way, reactive variables in a Shiny App create an interactive environment that is much improved from static plots. **Below are two original plots from the TidyTuesday selection that served as a starting point for developing the platform**. Reactive versions of each of these are found in the deployed app.
 
-The final project, Canadian Wind Turbine Shiny App, is published here: https://jwolf15.shinyapps.io/final_project/,
-and a backup is published without the final report here: https://learningai.shinyapps.io/final_project/.
-
 ```{r original, echo=FALSE, warning=FALSE, include=FALSE}
 
 ## Code by Hunter Kempf
@@ -195,7 +192,7 @@ The deployed app, report, and full package can be found at the following links:
 ### About the Author
 Jennifer Wolf acted as the team lead and lead developer for the Shiny App group project.
 She authored the full report and the project presentations, which can be found in the Shiny App.
-Project group members are Halima Barthe, Tristan Richard, Ashokanand Deo. Special thank you to Halima and Tristan for your valuable contributions to the app.
+Group members are Halima Barthe, Tristan Richard, Ashokanand Deo. Special thank you to Halima and Tristan for your valuable contributions to the app.
 
 The group is with the School of Data Science, University of North Carolina - Charlotte, graduate program.
 
