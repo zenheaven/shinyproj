@@ -3,7 +3,7 @@ December 14, 2020
 
 DSBA 5122, Visual Analytics
 
-Group: Ashok Deo, Halima Barthe, Tristan Richard, Jennifer Wolf
+Group: Ashokanand Deo, Halima Barthe, Tristan Richard, Jennifer Wolf
 
 Data: Canadian Wind Turbines
 
