@@ -9,7 +9,7 @@ Data: Canadian Wind Turbines
 
 
 - Shiny.io Links to deployed app:
-https://jwolf15.shinyapps.io/final_project/ (
+https://jwolf15.shinyapps.io/final_project/ 
 
 - Also deployed by Halima Barthe to:
 https://learningai.shinyapps.io/final_project/
