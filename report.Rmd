@@ -1,6 +1,8 @@
 ---
 title: "Shiny App Project Report"
-author: "Jennifer Wolf"
+subtitle: "Visual Analytics Group Project"
+author: "By: Jennifer Wolf"
+subject: "Canadian Wind Turbines Dataset"
 date: "12/14/2020"
 output: html_document
 ---
@@ -17,15 +19,15 @@ library(rgeos)
 # Section 1: 
 ## TidyTuesday and Shiny App
 
-The TidyTuesday selection was written by a submitter named Hunter Kempf. 
+The TidyTuesday selection that seeded this project was written by a submitter named Hunter Kempf. 
 His analysis visualized Canadian Wind turbine data from 1993 - 2019 by height, by year, household consumption, and turbine production. The plots are useful for those subsets of data but are limited in the ability to make deeper connections or draw meaningful conclusions from among the plots. 
 
 As a result, the task was to provide a useful experience by implementing a **Shiny App** in ways that will allow the user to explore the visualizations. The platform populates interactive tables and graphs with reactive features. Across the platform, some emphasis is placed on demonstrating the evolution of production over time while providing broad views and access to the data.
 
-In this way, reactive variables in a Shiny App create an interactive environment that is much improved from static plots. **Below are two original plots from the TidyTuesday selection that served as a starting point for developing our platform**. Reactive versions of each of these are found in the deployed app.
+In this way, reactive variables in a Shiny App create an interactive environment that is much improved from static plots. **Below are two original plots from the TidyTuesday selection that served as a starting point for developing the platform**. Reactive versions of each of these are found in the deployed app.
 
-The final project, Canadian Wind Turbine Shiny App, is published here: https://jwolf15.shinyapps.io/final_project/, 
-and a backup published without the final report is here: https://learningai.shinyapps.io/final_project/.
+The final project, Canadian Wind Turbine Shiny App, is published here: https://jwolf15.shinyapps.io/final_project/,
+and a backup is published without the final report here: https://learningai.shinyapps.io/final_project/.
 
 
 ```{r original, echo=FALSE, warning=FALSE, include=FALSE}
@@ -75,10 +77,10 @@ ggplot(
 ## map plot
 world <- ne_countries(scale = "medium", returnclass = "sf")
 plotmap <- ggplot(data = world) +
-    geom_sf() + 
-    coord_sf(xlim = c(-143.00275, -50.3273481), ylim = c(40.6765556, 83.3197975), expand = FALSE) + 
-    geom_point(data = projects,
-               aes(x = longitude, y = latitude, size = capacity,color=province_territory), alpha=.5) + 
+  geom_sf() + 
+  coord_sf(xlim = c(-143.00275, -50.3273481), ylim = c(40.6765556, 83.3197975), expand = FALSE) + 
+  geom_point(data = projects,
+             aes(x = longitude, y = latitude, size = capacity,color=province_territory), alpha=.5) + 
   labs(x = "", y="",
        title="Harnessing the Wind",
        subtitle = 'Canadian Wind Power Generation',
@@ -108,30 +110,30 @@ Lastly, new visualizations were created by filtering, summarizing, grouping, or 
 
 province <- st_read("./data/province/province.shp")
 province %>% 
-      ggplot() +
-      geom_sf(aes(fill = NAME)) + 
-      geom_sf_text(aes(label=NAME),size =1.5) + 
-      geom_point(data = projects, aes(x = longitude, y = latitude, size = capacity))+
-      theme_minimal()
+  ggplot() +
+  geom_sf(aes(fill = NAME)) + 
+  geom_sf_text(aes(label=NAME),size =1.5) + 
+  geom_point(data = projects, aes(x = longitude, y = latitude, size = capacity))+
+  theme_minimal()
 
 ggplot(wind_turbine, aes(year,hub_height_m)) + 
-      geom_point(aes(size=turbine_rated_capacity_k_w,color=turbine_rated_capacity_k_w)) +
-      theme_bw() +
-      facet_wrap(~province_territory) +
-      ylab('Turbine Height') +
-      xlab('Year')
+  geom_point(aes(size=turbine_rated_capacity_k_w,color=turbine_rated_capacity_k_w)) +
+  theme_bw() +
+  facet_wrap(~province_territory) +
+  ylab('Turbine Height') +
+  xlab('Year')
 
- wind_turbine %>% 
-        count(province_territory) %>% 
-        ggplot(aes(forcats::fct_reorder(province_territory, n), n)) +
-        geom_bar(stat="identity", fill="steelblue") +
-        ggtitle("Number of Turbines for Each Province") +
-        coord_flip() +
-        theme_minimal() +
-        ylab('Number of Turbines') +
-        xlab('Province')
+wind_turbine %>% 
+  count(province_territory) %>% 
+  ggplot(aes(forcats::fct_reorder(province_territory, n), n)) +
+  geom_bar(stat="identity", fill="steelblue") +
+  ggtitle("Number of Turbines for Each Province") +
+  coord_flip() +
+  theme_minimal() +
+  ylab('Number of Turbines') +
+  xlab('Province')
 
- 
+
 ```
 
 # Section 3: 
@@ -183,13 +185,17 @@ Furthermore, as future design improvements are integrated into the app, the perf
 
 The deployed app, report, and full package can be found at the following links:
 
-- Shiny App: https://jwolf15.shinyapps.io/final_project/
+- Canadian Wind Turbine Shiny App: https://jwolf15.shinyapps.io/final_project/
 - Report on bookdown: https://bookdown.org/jenniwolf/barthe-deo-richard-wolf_finalreport/
 - Project files on GitHub: https://github.com/zenheaven/shinyproj
+- Original TidyTuesday by Hunter Kempf on GitHub: https://github.com/thedataviz/Tidy-Tuesday/tree/master/10-27-2020
 
-Jennifer Wolf is Team Lead and Lead Developer for this content. She is the author of both the full report and the project presentation.
-Class of 2020, School of Data Science, UNC-Charlotte, Graduate Certificate program. 
-This is the author's first Shiny App.
+## About the Author
+Jennifer Wolf is Team Lead and Lead Developer on the Shiny App group project.
+She authored the full report and the project presentations, which can be found in the Shiny App.
+Project group members are Halima Barthe, Tristan Richard, Ashokanand Deo. Special thank you to Halima and Tristan for your contributions to the Shiny App development.
 
+Jennifer is with the graduating Class of 2020, School of Data Science, University of North Carolina - Charlotte, Graduate Certificate program.
 
+This is the author's first Shiny App, bookdown report, and GitHub repository.
 
