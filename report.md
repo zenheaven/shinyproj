@@ -58,7 +58,7 @@ province %>%
       ggplot() +
       geom_sf(aes(fill = NAME)) + 
       geom_sf_text(aes(label=NAME),size =1.5) + 
-      geom_point(data = projects, aes(x = longitude, y = latitude, size = capacity))+
+      geom_point(data = projects, aes(x = longitude, y = latitude, size = capacity), alpha=0.35)+
       theme_minimal()
 ```
 
