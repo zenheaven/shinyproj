@@ -71,7 +71,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                           p("Every Canadian province is now benefiting from clean wind energy.")
                                         ),
                                         fluidRow(
-                                          tags$img(id = "myImage", src = "image1.jpg", alt = "Image Source: NAwindpower.com", height = "600px", width="400px"),
+                                          tags$img(id = "myImage", src = "image1.jpg", alt = "Image Source: NAwindpower.com", height = "400px", width="600px"),
                                           hr()
                                         )
                                       )
