@@ -42,7 +42,7 @@ cumulative_MW_added
 ##-------------- end of code by Hunter Kempf
 
 province <- st_read("./data/province/province.shp")
-m= list(  "Alberta"= "Alberta","British Columbia"= "British Columbia","Manitoba"= "Manitoba",                 
+m <- list(  "Alberta"= "Alberta","British Columbia"= "British Columbia","Manitoba"= "Manitoba",                 
           "New Brunswick"= "New Brunswick","Newfoundland and Labrador"= "Newfoundland and Labrador",
           "Northwest Territories"= "Northwest Territories",  
           "Nova Scotia"="Nova Scotia", "Ontario"= "Ontario",
@@ -58,9 +58,8 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                            tabPanel("Home",
                                     sidebarLayout(   
                                       sidebarPanel(
-                                        br(),
-                                        h3("Use the tabs to explore Canada's wind turbine locations, production, and growth through the years."),
-                                        br(),br()
+                                        h4("Use the tabs to explore Canada's wind turbine locations, production, and growth through the years."),
+                                        br()
                                       ),
                                       mainPanel(
                                         fluidRow(
@@ -88,11 +87,12 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                                    p("Select the columns you want to display."),
                                                    checkboxGroupInput("show_vars", "Columns in projects to show:",
                                                                       names(wind_turbine), selected = names(wind_turbine)), width = 3,
-                                                   hr(),
-                                                   downloadButton("download", "Download")),
+                                                   br(),
+                                                 ),
                                                  mainPanel(
                                                    h4("Wind Turbine Dataset (view of first 50 rows)"), br(),
-                                                   DT::dataTableOutput("table"))
+                                                   DT::dataTableOutput("table")
+                                                   )
                                                )
                                       ),
                                       ## ------------------------------ End tables tab 
@@ -101,7 +101,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                                  sidebarPanel(selectInput("selection", "Summary Tab Settings: Select a province to filter summary list", choices = m,selected='Alberta')),
                                                  mainPanel(h4('Summary by Projects'), tableOutput("summary"))
                                                )
-                                      )
+                                               )
                            ),
                            ## ----------------------------- End summary tab
                            tabPanel("Graphs",
@@ -110,34 +110,38 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                                                 choices = c("By Projects" = "projects", "By Province"="province")),
                                                    hr(),
                                       ),
-                                      mainPanel(h4(br(),"Number of Turbines"), plotOutput("countPlots"))
+                                      mainPanel(
+                                        h4("Number of Turbines", plotOutput("countPlots"))
                                     )
-                                    
+                                    )
                            ),
-                           ## ------------------------------ End Evolution of turbines tab
+                           ## ------------------------------ End Graphs tab
                            tabPanel("Evolution of Turbines", 
                                     sidebarLayout(
                                       sidebarPanel(
                                         h4("Turbine construction by province and year"),
                                         sliderInput(inputId = "max", label = "Adjust years to see changes by province over time", 
-                                                    min = 1993, max = 2019,step=1, value = 2019, animate=TRUE)
+                                                    min = 1993, max = 2019, step=1, value = 2019, animate=TRUE)
                                       ),
                                       mainPanel(plotOutput("facetGraph"))
                                     )
                            ),
+                           ## ------------------------------ End Evolution tab
                            navbarMenu("Maps",
-                                      tabPanel("Animated Map", 
+                                      tabPanel("Animated Map",
+                                               fluidRow(h5("Please wait a few moments for map to load."), br()),
                                                sidebarLayout(
                                                  sidebarPanel(
+                                                   #h5("Please wait a few moments for map to load."), br(),
                                                    h4("Adjust capacity settings"),
                                                    sliderInput(inputId = "map", label = "Adjust to see turbine capacity by location",
-                                                               min = 0, max = 350, step=1, value = 350, animate=TRUE)
+                                                               min = 0, max = 350, step=25, value = 350, animate=FALSE) #set to false because of slow rendering
                                                  ),
                                                  mainPanel(plotOutput("animatedMap"))
-                                               )
+                                                 )
                                       ),
                                       tabPanel("Zoom Map",
-                                               fluidRow(
+                                               fluidRow(h5("Please wait a few moments for map to load."), br(),
                                                  column(4,
                                                         h4("Click and drag over an area, then double-click to zoom in on the map."), 
                                                         p("Double-click again to zoom out.")),
@@ -208,7 +212,8 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                                  ),
                                                  fluidRow(
                                                    hr(), hr(),
-                                                   h6("Slide 12: Flexdashboard Screen Print"),
+                                                   h6("Slides 12 - 15: Flexdashboard Screen Prints"),
+                                                   h6("Slide 12"),
                                                    tags$img(id = "m12", src = "mSlide12.png", alt = "Flexdashboard Demo 1")
                                                  ),
                                                  fluidRow(
@@ -268,7 +273,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                                  ),
                                                  fluidRow(
                                                    hr(), hr(),
-                                                   h6("Slide6"),
+                                                   h6("Slide 6"),
                                                    tags$img(id = "6", src = "slide6final.png", alt = "UNCC - School of Data Science")
                                                  ),
                                                  fluidRow(
@@ -291,29 +296,20 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                            )
                            ## ------------------------------ End report tab
                            
+                
                 ) #close navbar
 ) #end ui
 
 server <- function(input, output, session) {
   
   
-  ## table output 
+  ## data able output 
   wind_turbine2 = wind_turbine[sample(nrow(wind_turbine), 50), ] 
   
   output$table <- DT::renderDataTable({
     DT::datatable(wind_turbine2[, input$show_vars, drop = FALSE])
   })
-  
-  # Idea is a downloadable csv of selected dataset--- not functioning as intended 
-  output$downloadData <- downloadHandler(
-    filename = function() {
-      paste(input$dataset, ".csv", sep = "")
-    },
-    content = function(file) {
-      write.csv(datasetInput(input$dataset), file, row.names = FALSE)
-    }
-  )
-  ## End table -------------------
+  ## End datatable -------------------
   
   ## summary output 
   output$summary <- renderTable({
@@ -322,12 +318,12 @@ server <- function(input, output, session) {
   ## End summary-------------------
   
   ## countPlots output
-  ## Code for bar plots by Cédric Scherer that I adapted with reactivity and logic
+  ## Code for bar plots by Cédric Scherer that I adapted with reactivity, logic and plot layers
   countPlots <- reactive({  
     projCount %>% 
       filter(projCount %in% 100:input$count)
   })
-  
+ 
   output$countPlots <- renderPlot({
     if (input$selectPlot == "projects") {
       projCount <- wind_turbine %>% 
@@ -375,14 +371,14 @@ server <- function(input, output, session) {
   ## animatedMap output 
   data1 <- reactive({select(projects,longitude,latitude,capacity) %>% filter (capacity %in% 0:input$map ) })
   
-  output$animatedMap <- renderPlot({
-    province %>% 
-      ggplot() +
-      geom_sf(aes(fill = NAME)) + 
-      geom_sf_text(aes(label=NAME),size =1.5) + 
-      geom_point(data = data1(), aes(x = longitude, y = latitude, size = capacity))+
-      theme_minimal()
-  }, height = 800)
+    output$animatedMap <- renderPlot({
+      province %>% 
+        ggplot() +
+        geom_sf(aes(fill = NAME, tooltip = NAME, data_id = NAME)) + 
+        geom_sf_text(aes(label=NAME),size =2.5) + 
+        geom_point(data = data1(), aes(x = longitude, y = latitude, size = capacity), alpha=.35)+
+        theme_minimal()
+    }, height = 800)
   ## End animatedMap----------------------
   
   
@@ -419,7 +415,7 @@ server <- function(input, output, session) {
     }
     
   })
-  ## End zoomMap---------------------
+  ## End ZoomMap---------------------
   
 }
 
