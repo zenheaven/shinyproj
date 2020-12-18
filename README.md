@@ -1,6 +1,8 @@
 ---
-Title: 'Shakespeare Plays: Word Frequencies'
-keywords: [word frequencies, shiny, shiny app, r, word cloud, shakespeare word counts, shakespeare, ggplot, reactivity]
+Author: Jennifer Wolf
+Title: 'Shiny App: Canadian Wind Turbines'
+Subtitle: Visual Analytics Final Project
+keywords: [shiny, shiny app, r, tidytuesday, Canadian wind turbines, visual analytics, reactive variables, ggplot, unc charlotte, school of data science, jwolf15, jenniwolf, first shiny app]
 ---
 # shinyproj
 December 14, 2020
