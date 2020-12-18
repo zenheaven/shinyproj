@@ -59,20 +59,22 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     sidebarLayout(   
                                       sidebarPanel(
                                         h4("Use the tabs to explore Canada's wind turbine locations, production, and growth through the years."),
-                                        br(),br()
-                                      ),
+                                        ),
                                       mainPanel(
-                                        fluidRow(
+                                        column(9,
+                                          fluidRow(
                                           h1(tippy("Wind Energy in Canada", tooltip = "Welcome to our Shiny App: Wind Energy in Canada.")),
                                           h4("More wind energy has been built in Canada between 2009 and 2020 than any other form of electricity."),
                                           p("Wind energy is generating enough power to meet the needs of over three million Canadian homes."),
                                           p("There are 301 wind farms operating from coast to coast, with projects in two northern territories."),
                                           p("In 2019, Canada's wind generation grew by 597 megawatts (MW) from five new wind energy projects, representing an investment of over $1 billion."),
-                                          p("Every Canadian province is now benefiting from clean wind energy.")
-                                        ),
-                                        fluidRow(
-                                          tags$img(id = "myImage", src = "image1.jpg", alt = "Image Source: NAwindpower.com", height = "400px", width="600px"),
+                                          p("Every Canadian province is now benefiting from clean wind energy."),
+                                        br(),
+                                          p(tags$img(id = "myImage", src = "image1.jpg", alt = "Image Source: NAwindpower.com", height = "400px", width="600px"),
                                           hr()
+                                          ))),
+                                        column(3, 
+                                        fixedRow() ## to make wide margin for whitespace
                                         )
                                       )
                                     )
