@@ -1,6 +1,6 @@
 ---
 Title: 'Shakespeare Plays: Word Frequencies'
-keywords: [word frequencies, shiny, shiny app, r, word cloud, shakespeare word counts, shakespeare]
+keywords: [word frequencies, shiny, shiny app, r, word cloud, shakespeare word counts, shakespeare, ggplot, reactivity]
 ---
 # shinyproj
 December 14, 2020
